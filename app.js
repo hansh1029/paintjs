@@ -38,7 +38,7 @@ function setTouchPosition(event) {
 
 function startTouchPainting(event) {
   const { x, y } = setTouchPosition(event);
-  console.log("creating path in ", x, y);
+  //console.log("creating path in ", x, y);
   ctx.beginPath();
   ctx.moveTo(x, y);
   painting = true;
@@ -48,11 +48,11 @@ function onMouseMove(event) {
   const x = event.offsetX;
   const y = event.offsetY;
   if (!painting) {
-    console.log("creating path in ", x, y);
+    //console.log("creating path in ", x, y);
     ctx.beginPath();
     ctx.moveTo(x, y);
   } else {
-    console.log("creating line in ", x, y);
+    //console.log("creating line in ", x, y);
     ctx.lineTo(x, y);
     ctx.stroke();
   }
@@ -60,9 +60,10 @@ function onMouseMove(event) {
 
 function onTouchMove(event) {
   const { x, y } = setTouchPosition(event);
-  console.log("creating line in ", x, y);
+  //console.log("creating line in ", x, y);
   ctx.lineTo(x, y);
   ctx.stroke();
+  event.preventDefault();
 }
 
 function handleColorClick(event) {
@@ -105,6 +106,7 @@ function handleSaveClick() {
   console.log(link);
   link.click();
 }
+
 
 if (canvas) {
   canvas.addEventListener("mousemove", onMouseMove);
