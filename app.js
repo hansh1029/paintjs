@@ -29,18 +29,40 @@ function startPainting() {
   painting = true;
 }
 
+function setTouchPosition(event) {
+  const rect = event.target.getBoundingClientRect();
+  const x = event.touches[0].clientX - window.pageXOffset - rect.left;
+  const y = event.touches[0].clientY - window.pageYOffset - rect.top;
+  return { x, y };
+}
+
+function startTouchPainting(event) {
+  const { x, y } = setTouchPosition(event);
+  //console.log("creating path in ", x, y);
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  painting = true;
+}
+
 function onMouseMove(event) {
   const x = event.offsetX;
   const y = event.offsetY;
   if (!painting) {
-    // console.log("creating path in ", x, y);
+    //console.log("creating path in ", x, y);
     ctx.beginPath();
     ctx.moveTo(x, y);
   } else {
-    // console.log("creating line in ", x, y);
+    //console.log("creating line in ", x, y);
     ctx.lineTo(x, y);
     ctx.stroke();
   }
+}
+
+function onTouchMove(event) {
+  const { x, y } = setTouchPosition(event);
+  //console.log("creating line in ", x, y);
+  ctx.lineTo(x, y);
+  ctx.stroke();
 }
 
 function handleColorClick(event) {
@@ -92,8 +114,8 @@ if (canvas) {
   canvas.addEventListener("click", handleCanvasClick);
   canvas.addEventListener("contextmenu", handleCM);
 
-  canvas.addEventListener("touchmove", onMouseMove);
-  canvas.addEventListener("touchstart", startPainting);
+  canvas.addEventListener("touchmove", onTouchMove);
+  canvas.addEventListener("touchstart", startTouchPainting);
   canvas.addEventListener("touchend", stopPainting);
   canvas.addEventListener("touchcancel", stopPainting);
 }
